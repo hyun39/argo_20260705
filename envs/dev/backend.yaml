@@ -1,0 +1,10 @@
+# dev 오버라이드 — 08_Helm_Argo_진화관점.md Wave 3의 gitops-repo/envs/dev/values.yaml 구조를
+# backend/frontend 2앱 체제로 재현
+replicaCount: 1
+image:
+  repository: backend
+  tag: "1.0.0"
+resources:
+  limits:
+    memory: 256Mi
+    cpu: 250m

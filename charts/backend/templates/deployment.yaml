@@ -1,0 +1,24 @@
+# 08_Helm_Argo_진화관점.md Wave 2 예시를 그대로 재현 — 변수 자리 표시(Go template)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.replicaCount }}    # values에서 주입
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        readinessProbe: {httpGet: {path: /healthz, port: 8000}, initialDelaySeconds: 1, periodSeconds: 2}

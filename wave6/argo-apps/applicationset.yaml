@@ -1,0 +1,40 @@
+# 1단계: matrix 생성기에 조합 1개(backend x dev)만 등록한 상태.
+# 이 파일을 wave6/argo-apps/applicationset.yaml로 push하면 루트 App이 감지해서
+# ApplicationSet 리소스 자체를 만들고, 그 ApplicationSet이 backend-dev Application 1개를 자동 생성한다.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: wave6-matrix
+  namespace: argocd
+spec:
+  generators:
+  - matrix:
+      generators:
+      - list:
+          elements:
+          - app: backend
+      - list:
+          elements:
+          - env: dev
+  template:
+    metadata:
+      name: '{{app}}-{{env}}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hyun39/argo_20260705.git
+        targetRevision: main
+        path: 'charts/{{app}}'
+        helm:
+          valueFiles:
+          - '../../envs/{{env}}/{{app}}.yaml'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'wave6-{{env}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

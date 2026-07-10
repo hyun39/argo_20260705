@@ -1,0 +1,25 @@
+# 이 파일이 곧 배포 요청이다 — argo-apps/ 아래에 이 파일 하나를 push하는 것만으로
+# wave6-child-a Application이 자동 생성·동기화된다(문서 Wave 6의 핵심: "파일 추가 = 자동 등록").
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wave6-child-a
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hyun39/argo_20260705.git
+    targetRevision: main
+    path: charts/myapp
+    helm:
+      valueFiles:
+      - ../../envs/dev/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wave6-child-a-demo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

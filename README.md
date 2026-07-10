@@ -1,8 +1,17 @@
-# argo_20260705
+# argo_20260705 — GitOps 데모 저장소
 
-L15_운영배포 진화관점 대시보드의 "Argo CD (Pull GitOps 자동 동기화)" Wave가 실제로
-Pull 기반 GitOps 동기화를 시연하기 위해 사용하는 데모 저장소입니다.
+`L15_운영배포/08_Helm_Argo_진화관점.md`의 Wave 3(GitOps 원칙) ~ Wave 4(Argo CD Pull GitOps)
+실습에서 사용하는 저장소입니다.
 
-`manifests/`에 있는 Kubernetes 리소스를 Argo CD의 Application이 이 저장소를 감시(polling)하며
-자동으로 클러스터에 동기화합니다. 이 파일들을 수정하고 push하면, 별도로 `kubectl apply`를
-실행하지 않아도 Argo CD가 자동으로 클러스터 상태를 그 변경사항에 맞춰 갱신합니다(Self-Healing 포함).
+```
+.
+├── charts/myapp/       # Helm 차트 (공통, Wave 2와 동일 구조)
+└── envs/
+    ├── dev/values.yaml   # dev 오버라이드
+    └── prod/values.yaml  # prod 오버라이드 — 이 파일의 변경이 곧 "prod 배포 요청"
+```
+
+- **Wave 3**: 이 구조 자체가 "Git = 진실의 원천"이다. `envs/prod/values.yaml`을 수정하고 커밋하는 것이
+  배포 요청이며, `git log`가 배포 이력이 된다. 단, 이 시점엔 아직 아무것도 자동으로 클러스터에
+  반영되지 않는다 — 그게 Wave 3에서 발견하는 한계다.
+- **Wave 4**: Argo CD Application이 이 저장소를 직접 pull해 그 한계를 해소한다.

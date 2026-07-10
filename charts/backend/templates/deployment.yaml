@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: {{ .Values.appName }}
 spec:
   replicas: {{ .Values.replicaCount }}    # values에서 주입
   selector:
     matchLabels:
-      app: myapp
+      app: {{ .Values.appName }}
   template:
     metadata:
       labels:
-        app: myapp
+        app: {{ .Values.appName }}
     spec:
       containers:
       - name: app

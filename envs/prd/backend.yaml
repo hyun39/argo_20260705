@@ -1,0 +1,9 @@
+# prd 오버라이드 — 이 파일의 한 줄 변경이 곧 "prd 배포 요청"이라는 게 Wave 3의 핵심(GitOps 원칙 ①②)
+replicaCount: 3
+image:
+  repository: backend
+  tag: "1.0.0"
+resources:
+  limits:
+    memory: 512Mi
+    cpu: 500m

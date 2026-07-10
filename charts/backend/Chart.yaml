@@ -1,6 +1,0 @@
-apiVersion: v2
-name: backend
-description: 08_Helm_Argo_진화관점.md Wave 2 실습용 차트 (backend)
-type: application
-version: 0.1.0
-appVersion: "1.0.0"

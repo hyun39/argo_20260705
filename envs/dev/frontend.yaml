@@ -1,9 +1,0 @@
-# dev 오버라이드 — backend와 같은 패턴
-replicaCount: 1
-image:
-  repository: frontend
-  tag: "1.0.0"
-resources:
-  limits:
-    memory: 256Mi
-    cpu: 250m

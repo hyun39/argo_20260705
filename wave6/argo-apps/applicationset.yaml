@@ -1,6 +1,7 @@
-# 1단계: matrix 생성기에 조합 1개(backend x dev)만 등록한 상태.
-# 이 파일을 wave6/argo-apps/applicationset.yaml로 push하면 루트 App이 감지해서
-# ApplicationSet 리소스 자체를 만들고, 그 ApplicationSet이 backend-dev Application 1개를 자동 생성한다.
+# 2단계: matrix 생성기 목록을 app=[backend,frontend] x env=[dev,prd]로 확장한 상태.
+# 파일 하나(같은 wave6/argo-apps/applicationset.yaml)를 이 내용으로 덮어쓰고 push만 하면
+# Application 4개(backend-dev, frontend-dev, backend-prd, frontend-prd)가 자동으로 생겨난다 —
+# 서비스 10개 x 환경 5개 = Application 50개도 이 목록만 늘리면 되는 것과 동일한 원리.
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -13,9 +14,11 @@ spec:
       - list:
           elements:
           - app: backend
+          - app: frontend
       - list:
           elements:
           - env: dev
+          - env: prd
   template:
     metadata:
       name: '{{app}}-{{env}}'
